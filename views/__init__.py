@@ -1,0 +1,5 @@
+from .agregar_cuota_view import agregar_cuota_view
+from .login_view import login_view
+from .registrar_pago_view import registrar_pago_view
+from .registro_usuario_view import registro_usuario_view
+from .registrar_socio_view import registro_socio_view

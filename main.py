@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
 from db.repository import BaseDeDatos
 from views import login_view, registro_socio_view, registro_usuario_view, agregar_cuota_view, registrar_pago_view

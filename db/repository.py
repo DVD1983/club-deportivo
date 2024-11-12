@@ -100,10 +100,24 @@ class BaseDeDatos:
                 cursor = conn.cursor()
                 cursor.execute("SELECT * FROM cuotas")
                 return cursor.fetchall()
+    
+    def obtener_cuota(self, tipo, deporte):
+        with self.conectar() as conn:
+            if conn is not None:
+                cursor = conn.cursor()
+                cursor.execute("SELECT * FROM cuotas WHERE tipo = %s AND deporte = %s", (tipo, deporte))
+                return cursor.fetchone()
 
     def insertar_pago_socio(self, socio_dni, tipo, deporte):
         with self.conectar() as conn:
             if conn is not None:
                 cursor = conn.cursor()
                 cursor.execute("INSERT INTO pagos (socio_dni, tipo, deporte) VALUES (%s, %s, %s)", (socio_dni, tipo, deporte))
+                conn.commit()
+
+    def insertar_pago_no_socio(self, dni, tipo, deporte):
+        with self.conectar() as conn:
+            if conn is not None:
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO pagos (dni, tipo, deporte) VALUES (%s, %s, %s)", (dni, tipo, deporte))
                 conn.commit()

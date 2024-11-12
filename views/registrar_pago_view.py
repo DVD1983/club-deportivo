@@ -14,20 +14,37 @@ def registrar_pago_view(root):
             if not numero_socio:
                 messagebox.showwarning("Error", "Por favor ingrese el número de socio.")
                 return
-            pago_controller.registrar_pago_socio(numero_socio, tipo_cuota, deporte)
+
+            # Llamar al método del controller y capturar el mensaje
+            resultado, message = pago_controller.registrar_pago_socio(numero_socio, tipo_cuota, deporte)
+
+            # Si el resultado es None, significa que hubo un error (por ejemplo, no encontrado)
+            if resultado is None:
+                messagebox.showwarning("Error", message)
+            else:
+                messagebox.showinfo("Éxito", "Pago registrado correctamente.")
+
         else:
             nombre = entry_nombre.get()
             dni = entry_dni.get()
             if not nombre or not dni:
                 messagebox.showwarning("Error", "Por favor ingrese el nombre y el DNI.")
                 return
-            pago_controller.registrar_pago_no_socio(nombre, tipo_cuota, deporte, dni)
+
+            # Llamar al método del controller y capturar el mensaje
+            resultado, message = pago_controller.registrar_pago_no_socio(nombre, tipo_cuota, deporte, dni)
+
+            # Si el resultado es None, significa que hubo un error (por ejemplo, no encontrado)
+            if resultado is None:
+                messagebox.showwarning("Error", message)
+            else:
+                messagebox.showinfo("Éxito", "Pago registrado correctamente.")
 
         # Limpiar entradas después del registro
         entry_numero_socio.delete(0, tk.END)
         entry_nombre.delete(0, tk.END)
         entry_dni.delete(0, tk.END)
-
+    
     def actualizar_formulario(event=None):
         tipo_cuota = tipo_var.get()
         if tipo_cuota in ["Social", "Deportiva"]:

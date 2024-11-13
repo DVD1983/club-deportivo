@@ -3,7 +3,7 @@ from tkinter import messagebox
 from tkinter import ttk
 from controllers import UsuarioController
 
-def registro_usuario_view(root):
+def registro_usuario_view(root, app):
     usuario_controller = UsuarioController()
 
     def agregar_usuario():
@@ -28,49 +28,59 @@ def registro_usuario_view(root):
         else:
             messagebox.showwarning("Error", "Por favor ingrese nombre, contraseña y rol.")
 
-    # Configuración de estilos
-    style = ttk.Style()
-    root.title("Registro de Usuario")
-    root.geometry("400x300")
-    root.configure(bg="#f0f0f0")  # Fondo gris claro
-    
-    # Estilos generales en negrita para etiquetas
-    style.configure("TLabel", font=("Arial", 12, "bold"), background="#f0f0f0", foreground="#333")
-    
-    # Estilos generales para las entradas
-    style.configure("TEntry", font=("Arial", 11), padding=5)
-    
-    # Estilo para el botón con fondo verde y texto blanco
-    style.configure("GreenButton.TButton",
-                    font=("Arial", 12, "bold"),
-                    padding=10,
-                    relief="flat",
-                    background="#4caf50",  # Fondo verde
-                    foreground="#fff")  # Letras blancas
-    
-    style.map("GreenButton.TButton",
-              background=[("active", "#45a049")])  # Color verde más oscuro al hacer clic
-
-    # Destruir los widgets actuales
+    # Limpiar la ventana actual
     for widget in root.winfo_children():
         widget.destroy()
 
-    # Etiquetas y entradas con estilo
-    ttk.Label(root, text="Nombre:").grid(row=0, column=0, padx=10, pady=20, sticky="e")
-    entry_nombre = ttk.Entry(root, width=30)
-    entry_nombre.grid(row=0, column=1, padx=10, pady=10)
+    # Configuración de la ventana y estilos
+    root.title("Registro de Usuario")
+    root.geometry("450x300")
+    root.configure(bg="#f0f0f0")  # Fondo gris claro
 
-    ttk.Label(root, text="Contraseña:").grid(row=1, column=0, padx=10, pady=20, sticky="e")
-    entry_password = ttk.Entry(root, show="*", width=30)
-    entry_password.grid(row=1, column=1, padx=10, pady=10)
+    # Crear marco principal
+    main_frame = tk.Frame(root, bg="#f0f0f0", padx=20, pady=20)
+    main_frame.pack(expand=True)
 
-    ttk.Label(root, text="Rol:").grid(row=2, column=0, padx=10, pady=20, sticky="e")
-    entry_rol = ttk.Entry(root, width=30)
-    entry_rol.grid(row=2, column=1, padx=10, pady=10)
+    # Título de la vista
+    tk.Label(main_frame, text="Registrar Usuario", font=("Arial", 18, "bold"), bg="#f0f0f0", fg="#333").grid(row=0, column=0, columnspan=2, pady=(0, 20))
 
-    # Botón de registro con fondo verde y texto blanco
-    button = ttk.Button(root, text="Registrar Usuario", command=agregar_usuario, style="GreenButton.TButton")
-    button.grid(row=3, column=0, columnspan=2, pady=30)
-    button.place(relx=0.5, rely=0.7, anchor="center")  # Centra el botón en el widget
+    # Etiquetas y entradas de texto
+    tk.Label(main_frame, text="Nombre:", font=("Arial", 12), bg="#f0f0f0", fg="#333").grid(row=1, column=0, sticky="e", pady=5)
+    entry_nombre = tk.Entry(main_frame, font=("Arial", 12), width=25, bd=2, relief="solid")
+    entry_nombre.grid(row=1, column=1, padx=10, pady=5)
+
+    tk.Label(main_frame, text="Contraseña:", font=("Arial", 12), bg="#f0f0f0", fg="#333").grid(row=2, column=0, sticky="e", pady=5)
+    entry_password = tk.Entry(main_frame, font=("Arial", 12), show="*", width=25, bd=2, relief="solid")
+    entry_password.grid(row=2, column=1, padx=10, pady=5)
+
+    tk.Label(main_frame, text="Rol:", font=("Arial", 12), bg="#f0f0f0", fg="#333").grid(row=3, column=0, sticky="e", pady=5)
+    entry_rol = tk.Entry(main_frame, font=("Arial", 12), width=25, bd=2, relief="solid")
+    entry_rol.grid(row=3, column=1, padx=10, pady=5)
+
+    # Botón de registro de usuario con efecto hover
+    registrar_button = tk.Button(main_frame, text="Registrar Usuario", font=("Arial", 12, "bold"), width=20, bg="#4cae4c", fg="white", bd=0, relief="flat", command=agregar_usuario)
+    registrar_button.grid(row=4, column=0, columnspan=2, pady=20)
+
+    def on_enter(e):
+        registrar_button.config(bg="#5cb85c")
+
+    def on_leave(e):
+        registrar_button.config(bg="#4cae4c")
+
+    registrar_button.bind("<Enter>", on_enter)
+    registrar_button.bind("<Leave>", on_leave)
+
+    # Botón para volver al menú principal con efecto hover
+    volver_button = tk.Button(main_frame, text="Volver al Menú Principal", font=("Arial", 12, "bold"), width=20, bg="#cccccc", fg="#333", bd=0, relief="flat", command=app.mostrar_menu)
+    volver_button.grid(row=5, column=0, columnspan=2, pady=10)
+
+    def on_volver_enter(e):
+        volver_button.config(bg="#bbbbbb")
+
+    def on_volver_leave(e):
+        volver_button.config(bg="#cccccc")
+
+    volver_button.bind("<Enter>", on_volver_enter)
+    volver_button.bind("<Leave>", on_volver_leave)
 
     root.mainloop()

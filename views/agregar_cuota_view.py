@@ -1,9 +1,8 @@
 import tkinter as tk
-from tkinter import ttk
-from tkinter import messagebox
+from tkinter import ttk, messagebox
 from controllers import CuotaController
 
-def agregar_cuota_view(root):
+def agregar_cuota_view(root, app):
     cuota_controller = CuotaController()
 
     def agregar_cuota():
@@ -28,55 +27,57 @@ def agregar_cuota_view(root):
     for widget in root.winfo_children():
         widget.destroy()
 
-    # Configuración de estilos
-    style = ttk.Style()
-    root.title("Agregar Cuota")
-    root.geometry("400x300")
+    # Cambiar el fondo de la ventana
     root.configure(bg="#f0f0f0")  # Fondo gris claro
-    
-    # Estilos generales en negrita para etiquetas
-    style.configure("TLabel", font=("Arial", 12, "bold"), background="#f0f0f0", foreground="#333")
-    
-    # Estilos generales para las entradas
-    style.configure("TEntry", font=("Arial", 11), padding=5)
-    
-    # Estilo para el botón con fondo blanco, texto verde y negrita
-    style.configure("WhiteGreenButton.TButton",
-                    font=("Arial", 12, "bold"),  # Texto en negrita
-                    padding=10,
-                    relief="solid",  # Borde sólido
-                    background="#fff",  # Fondo blanco
-                    foreground="#4caf50",  # Texto verde
-                    borderwidth=2)  # Borde más grueso
+    root.title("Agregar Cuota")
+    root.geometry("450x350")
 
-    style.map("WhiteGreenButton.TButton",
-              background=[("active", "#e0e0e0")],  # Fondo gris claro cuando el botón está activo
-              foreground=[("active", "#388e3c")])  # Texto verde oscuro al hacer clic
-    
-    # Crear los widgets de entrada
-    tk.Label(root, text="Tipo:").grid(row=0, column=0, padx=10, pady=20, sticky="e")
-    entry_tipo = tk.StringVar()
-    entry_tipo.set("Social")  # Establecer "Social" como la opción predeterminada
-    tk.OptionMenu(root, entry_tipo, "Social", "No social", "Deportiva", "Invitado").grid(row=0, column=1, padx=10, pady=10)
+    # Crear el marco principal para los elementos de entrada
+    main_frame = tk.Frame(root, bg="#f0f0f0", padx=20, pady=20)
+    main_frame.pack(expand=True)
 
-    tk.Label(root, text="Deporte:").grid(row=1, column=0, padx=10, pady=20, sticky="e")
-    entry_deporte = tk.StringVar()
-    entry_deporte.set("Fútbol")  # Establecer "Fútbol" como la opción predeterminada
-    tk.OptionMenu(root, entry_deporte, "Fútbol", "Vóley", "Básquet").grid(row=1, column=1, padx=10, pady=10)
+    # Título de la vista
+    tk.Label(main_frame, text="Agregar Cuota", font=("Arial", 18, "bold"), bg="#f0f0f0", fg="#333").grid(row=0, column=0, columnspan=2, pady=(0, 20))
 
-    tk.Label(root, text="Monto:").grid(row=2, column=0, padx=10, pady=20, sticky="e")
-    entry_monto = tk.Entry(root,width=30, font=("Arial", 11))
-    entry_monto.grid(row=2, column=1, padx=10, pady=10)
+    # Etiquetas y campos de entrada con los nuevos estilos
+    tk.Label(main_frame, text="Tipo:", font=("Arial", 12), bg="#f0f0f0", fg="#333").grid(row=1, column=0, sticky="e", pady=5)
+    entry_tipo = tk.StringVar(value="Social")
+    tk.OptionMenu(main_frame, entry_tipo, "Social", "No social", "Deportiva", "Invitado").grid(row=1, column=1, pady=5, sticky="w")
 
-    # Botón con estilo
-    button = ttk.Button(root, 
-                        text="Agregar Cuota", 
-                        command=agregar_cuota, 
-                        style="WhiteGreenButton.TButton")
-    button.grid(row=3, column=0, columnspan=2, pady=30)
-    button.place(relx=0.5, rely=0.7, anchor="center")  # Centra el botón en el widget
+    tk.Label(main_frame, text="Deporte:", font=("Arial", 12), bg="#f0f0f0", fg="#333").grid(row=2, column=0, sticky="e", pady=5)
+    entry_deporte = tk.StringVar(value="Fútbol")
+    tk.OptionMenu(main_frame, entry_deporte, "Fútbol", "Vóley", "Básquet").grid(row=2, column=1, pady=5, sticky="w")
+
+    tk.Label(main_frame, text="Monto:", font=("Arial", 12), bg="#f0f0f0", fg="#333").grid(row=3, column=0, sticky="e", pady=5)
+    entry_monto = tk.Entry(main_frame, font=("Arial", 12), width=20, bd=2, relief="solid")
+    entry_monto.grid(row=3, column=1, pady=5)
+
+    # Botón Agregar Cuota
+    agregar_button = tk.Button(main_frame, text="Agregar Cuota", font=("Arial", 12, "bold"), width=20, bg="#4cae4c", fg="white", bd=0, relief="flat", command=agregar_cuota)
+    agregar_button.grid(row=4, column=0, columnspan=2, pady=20)
+
+    # Efecto de hover para el botón
+    def on_enter(e):
+        agregar_button.config(bg="#5cb85c")
+
+    def on_leave(e):
+        agregar_button.config(bg="#4cae4c")
+
+    agregar_button.bind("<Enter>", on_enter)
+    agregar_button.bind("<Leave>", on_leave)
+
+    # Botón Volver al menú principal
+    volver_button = tk.Button(main_frame, text="Volver al Menú Principal", font=("Arial", 12, "bold"), width=20, bg="#cccccc", fg="#333", bd=0, relief="flat", command=app.mostrar_menu)
+    volver_button.grid(row=5, column=0, columnspan=2, pady=10)
+
+    # Efecto de hover para el botón Volver
+    def on_volver_enter(e):
+        volver_button.config(bg="#bbbbbb")
+
+    def on_volver_leave(e):
+        volver_button.config(bg="#cccccc")
+
+    volver_button.bind("<Enter>", on_volver_enter)
+    volver_button.bind("<Leave>", on_volver_leave)
 
     root.mainloop()
-
-
-
